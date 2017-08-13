@@ -1,0 +1,48 @@
+﻿<Window x:Class="ComboBoxBox.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:ComboBoxBox"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="MainWindow"
+        Width="525"
+        Height="350"
+        mc:Ignorable="d">
+    <Window.DataContext>
+        <local:ViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ComboBox Grid.Row="0" ItemsSource="{Binding TypeItems}">
+            <ComboBox.Style>
+                <Style TargetType="{x:Type ComboBox}">
+                    <Setter Property="ItemTemplate">
+                        <Setter.Value>
+                            <DataTemplate DataType="{x:Type local:TypeItem}">
+                                <TextBlock Text="{Binding DataContext.TypeItems, RelativeSource={RelativeSource AncestorType=ComboBox}, Converter={x:Static local:SelectedItemsToStringConverter.Default}}" />
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+
+                    <Style.Triggers>
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter Property="ItemTemplate">
+                                <Setter.Value>
+                                    <DataTemplate DataType="{x:Type local:TypeItem}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <CheckBox IsChecked="{Binding IsSelecteded}" />
+                                            <TextBlock Text="{Binding Text}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
+    </Grid>
+</Window>
